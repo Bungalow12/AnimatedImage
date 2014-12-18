@@ -1,0 +1,23 @@
+﻿using System;
+using System.Windows.Forms;
+using AnimatedImages;
+using System.Drawing;
+using System.Drawing.Imaging;
+
+namespace Viewer
+{
+    static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main(string[] args)
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new AnimatedImageViewer(args));
+        }
+    }
+}
+

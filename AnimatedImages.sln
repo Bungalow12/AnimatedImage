@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimatedImages", "AnimatedImages\AnimatedImages.csproj", "{6A14ED50-7995-4EAF-B6D5-6E734283B415}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimatedImageViewer", "Viewer\AnimatedImageViewer.csproj", "{49B3E2A3-3421-4CF9-B615-C49CB4D61FB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49B3E2A3-3421-4CF9-B615-C49CB4D61FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49B3E2A3-3421-4CF9-B615-C49CB4D61FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49B3E2A3-3421-4CF9-B615-C49CB4D61FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49B3E2A3-3421-4CF9-B615-C49CB4D61FB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A14ED50-7995-4EAF-B6D5-6E734283B415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A14ED50-7995-4EAF-B6D5-6E734283B415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A14ED50-7995-4EAF-B6D5-6E734283B415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A14ED50-7995-4EAF-B6D5-6E734283B415}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Viewer\AnimatedImageViewer.csproj
+	EndGlobalSection
+EndGlobal
