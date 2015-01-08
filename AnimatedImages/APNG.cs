@@ -188,6 +188,12 @@ namespace AnimatedImages
                     writer.Write(acTLChunk.RawData);
                 }
 
+                //Write all other chunks. (NOTE: These should be consistently the same for all frames)
+                foreach(OtherChunk otherChunk in defaultImage.OtherChunks)
+                {
+                    writer.Write(otherChunk.RawData);
+                }
+
                 //If Default Image is not animated
                 if (!DefaultImageIsAnimated)
                 {
@@ -209,15 +215,14 @@ namespace AnimatedImages
                 {
                     //write fcTL
                     writer.Write(frames[i].fcTLChunk.RawData);
-                    //Write fDAT
-                    fdATChunk fdat = fdATChunk.FromIDATChunk(frames[i].IDATChunks[0], frames[i].fcTLChunk.SequenceNumber);
-                    writer.Write(fdat.RawData);
-                }
 
-                //Write all other chunks. (NOTE: These should be consistently the same for all frames)
-                foreach(OtherChunk otherChunk in defaultImage.OtherChunks)
-                {
-                    writer.Write(otherChunk.RawData);
+                    //Write fDAT
+                    for(int j = 0; j < frames[i].IDATChunks.Count; ++j)
+                    {
+                        fdATChunk fdat = fdATChunk.FromIDATChunk(frames[i].IDATChunks[j], (uint)(frames[i].fcTLChunk.SequenceNumber + j + 1));
+
+                        writer.Write(fdat.RawData);
+                    }
                 }
 
                 //Write IEnd
@@ -465,10 +470,11 @@ namespace AnimatedImages
                 acTLChunk.PlayCount = 0;
             }
 
+            uint sequenceNumber = (frames.Count == 0) ? 0 : (uint)(frames[frames.Count - 1].fcTLChunk.SequenceNumber + frames[frames.Count - 1].IDATChunks.Count);
             //Create fcTL Chunk
             fcTLChunk fctl = new fcTLChunk
                 {
-                    SequenceNumber = (uint)frames.Count,
+                    SequenceNumber = sequenceNumber,
                     Width = (uint)image.Width,
                     Height = (uint)image.Height,
                     XOffset = 0,
@@ -508,7 +514,7 @@ namespace AnimatedImages
                 for (int i = 0; i < apng.FrameCount; ++i)
                 {
                     Frame frame = apng.Frames[i];
-                    frame.fcTLChunk.SequenceNumber = (uint)frames.Count;
+                    frame.fcTLChunk.SequenceNumber = sequenceNumber;
                     foreach(OtherChunk chunk in frame.OtherChunks)
                     {
                         if (!defaultImage.OtherChunks.Contains(chunk))

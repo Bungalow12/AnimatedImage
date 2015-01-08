@@ -214,6 +214,9 @@ namespace AnimatedImages
                 }
 
                 curImage = image[currentFrame++];
+
+                animationTimer.Interval = (image.GetFrameRate(currentFrame) != 0) ? image.GetFrameRate(currentFrame) : image.FrameRate;
+
                 Invalidate();
             }
         }

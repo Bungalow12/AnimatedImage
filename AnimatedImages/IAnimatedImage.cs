@@ -47,6 +47,20 @@ namespace AnimatedImages
         }
 
         /// <summary>
+        /// Gets the frame rate of a specific frame
+        /// </summary>
+        /// <returns>The frame rate of a specific frame</returns>
+        /// <param name="index">The frame index.</param>
+        int GetFrameRate(int index);
+
+        /// <summary>
+        /// Sets the frame rate of a specific frame
+        /// </summary>
+        /// <param name="index">The frame index.</param>
+        /// <param name="frameRate">Frame rate in milliseconds.</param>
+        void SetFrameRate(int index, int frameRate);
+
+        /// <summary>
         /// Gets the dispose operation for the specfied frame.
         /// </summary>
         /// <returns>The dispose operation for the specified frame.</returns>

@@ -178,25 +178,5 @@ namespace AnimatedImages
             //TODO: Build a better hash code. Perhaps for equality where chunktype bytes XOR'd with crc.
             return base.GetHashCode();
         }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="AnimatedImages.Chunk"/>.
-        /// </summary>
-        /// <param name="chunk1">Chunk1.</param>
-        /// <param name="chunk2">Chunk2.</param>
-        /*public static bool operator==(Chunk chunk1, Chunk chunk2)
-        {
-            chunk1.Equals()
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is NOT equal to the current <see cref="AnimatedImages.Chunk"/>.
-        /// </summary>
-        /// <param name="chunk1">Chunk1.</param>
-        /// <param name="chunk2">Chunk2.</param>
-        public static bool operator!=(Chunk chunk1, Chunk chunk2)
-        {
-            return !(chunk1 == chunk2);
-        }*/
     }
 }
