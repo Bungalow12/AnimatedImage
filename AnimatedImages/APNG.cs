@@ -194,18 +194,20 @@ namespace AnimatedImages
                     writer.Write(otherChunk.RawData);
                 }
 
+                uint sequenceNumber = 0;
                 //If Default Image is not animated
                 if (!DefaultImageIsAnimated)
                 {
                     //write IDAT
-                    writer.Write(defaultImage.IDATChunks[0].RawData);
+                    defaultImage.IDATChunks.ForEach(i => writer.Write(i.RawData));
                 }
                 else
                 {
+                    frames[0].fcTLChunk.SequenceNumber = sequenceNumber++;
                     //Write fcTL
                     writer.Write(frames[0].fcTLChunk.RawData);
                     //Write IDAT of first frame.
-                    writer.Write(frames[0].IDATChunks[0].RawData);
+                    frames[0].IDATChunks.ForEach(i => writer.Write(i.RawData));
                     //Set start frame indes to 1
                     frameWriteStartIndex = 1;
                 }
@@ -213,13 +215,14 @@ namespace AnimatedImages
                 //Foreach frame 
                 for (int i = frameWriteStartIndex; i < frames.Count; ++i)
                 {
+                    frames[i].fcTLChunk.SequenceNumber = sequenceNumber++;
                     //write fcTL
                     writer.Write(frames[i].fcTLChunk.RawData);
 
                     //Write fDAT
                     for(int j = 0; j < frames[i].IDATChunks.Count; ++j)
                     {
-                        fdATChunk fdat = fdATChunk.FromIDATChunk(frames[i].IDATChunks[j], (uint)(frames[i].fcTLChunk.SequenceNumber + j + 1));
+                        fdATChunk fdat = fdATChunk.FromIDATChunk(frames[i].IDATChunks[j], sequenceNumber++);
 
                         writer.Write(fdat.RawData);
                     }
@@ -258,7 +261,7 @@ namespace AnimatedImages
         /// </summary>
         public Frame[] Frames
         {
-            get { return frames.ToArray(); }
+            get { return IsSimplePNG ? new Frame[]{defaultImage}:frames.ToArray(); }
         }
 
         /// <summary>
@@ -268,7 +271,7 @@ namespace AnimatedImages
         /// <param name="index">Index.</param>
         public DisposeOps GetDisposeOperationFor(int index)
         {
-            return this.frames[index].fcTLChunk.DisposeOp;
+            return IsSimplePNG ? DisposeOps.APNGDisposeOpNone : this.frames[index].fcTLChunk.DisposeOp;
         }
 
         /// <summary>
@@ -278,7 +281,7 @@ namespace AnimatedImages
         /// <param name="index">Index.</param>
         public BlendOps GetBlendOperationFor(int index)
         {
-            return this.frames[index].fcTLChunk.BlendOp;
+            return IsSimplePNG ? BlendOps.APNGBlendOpSource : this.frames[index].fcTLChunk.BlendOp;
         }
 
         /// <summary>
@@ -306,7 +309,8 @@ namespace AnimatedImages
             get
             {
                 Bitmap bmp = null;
-                if(index >= 0 && index < frames.Count)
+                if (IsSimplePNG) return new Bitmap(defaultImage.ToBitmap(), this.viewSize);
+                if (index >= 0 && index < frames.Count)
                 {
                     //Return bitmap of requested view size
                     bmp = new Bitmap(frames[index].ToBitmap(), this.viewSize);
@@ -323,7 +327,7 @@ namespace AnimatedImages
         {
             get
             {
-                return (int)acTLChunk.FrameCount;
+                return (int)(acTLChunk?.FrameCount??1);
             }
         }
 
@@ -416,7 +420,7 @@ namespace AnimatedImages
         {
             get
             {
-                return (int)acTLChunk.PlayCount;
+                return (int)(acTLChunk?.PlayCount??0);
             }
             set
             {

@@ -215,7 +215,8 @@ namespace AnimatedImages
 
                 curImage = image[currentFrame++];
 
-                animationTimer.Interval = (image.GetFrameRate(currentFrame) != 0) ? image.GetFrameRate(currentFrame) : image.FrameRate;
+                if (frameRate !=0)
+                    animationTimer.Interval = (image.GetFrameRate(currentFrame) != 0) ? image.GetFrameRate(currentFrame) : image.FrameRate;
 
                 Invalidate();
             }
@@ -243,8 +244,10 @@ namespace AnimatedImages
 
                 }
 
-                animationTimer.Interval = frameRate;
-                animationTimer.Start();
+                if (frameRate == 0) {
+                    curImage = image[0];
+                    Invalidate();
+                }
             }
         }
 
@@ -263,8 +266,11 @@ namespace AnimatedImages
             {
                 frameRate = value;
                 curPlayCount = image.PlayCount;
-                animationTimer.Interval = frameRate;
-                animationTimer.Start();
+                if (frameRate != 0) {
+                    animationTimer.Interval = frameRate;
+                    animationTimer.Start();
+                }
+                else animationTimer.Stop();
             }
         }
 
